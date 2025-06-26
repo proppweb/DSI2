@@ -1,0 +1,203 @@
+---
+import { ViewTransitions } from "astro:transitions";
+import { getRelativeLocaleUrl } from "astro:i18n";
+import Menu from "../components/Menu.astro";
+interface Props {
+  title: string;
+  locale: string;
+  description?: string;
+  img?: string;
+}
+
+const { title, locale, description, img } = Astro.props;
+const currentPath = Astro.url.pathname;
+---
+
+<!doctype html>
+<html lang={locale}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content={title} />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/svg/DSI_Logo_05.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="theme-color" content={title === "Design Spaziale Italiano" ? "#010104" : "#ffffff"}>
+    <!-- <meta name="theme-color" content="#ffffff"> -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="white">
+
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={img} />
+    <meta property="og:url" content={currentPath} />
+    <meta property="og:type" content="website" />
+    
+    <meta name="twitter:card" content={img} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={img} />
+    
+    <meta name="description" content={description} />
+    <meta property="og:site_name" content={title} />
+    <!-- <meta name="twitter:site" content="@your_twitter_handle" /> -->
+    
+    <title>{title}</title>
+    <ViewTransitions />
+  </head>
+
+  <body class="antialiased overflow-auto no-scrollbar scroll-smooth">
+
+    <!-- MENU BOTTOM x DESKTOP -->
+    <div x-data="{ open: false }" class="">
+
+      <!-- Row 1: Text Menu -->
+      <div class="hidden sm:flex flex-col w-full lg:w-1/2 fixed z-50 bottom-0 left-0 backdrop-blur-md text-black text-lg lg:text-base xl:text-lg bg-white">
+        <div class="flex justify-evenly py-3 h-14 items-center border-t border-black">
+          <a href={getRelativeLocaleUrl(locale, "/")} class={currentPath === getRelativeLocaleUrl(locale, "/") ? "text-blu" : "hover:text-blu"}>DSI</a>
+          <a href={getRelativeLocaleUrl(locale, "/texts")} class={currentPath === getRelativeLocaleUrl(locale, "/texts") ? "text-blu" : "hover:text-blu"}>{locale === "it" ? "Scritti" : "Texts"}</a>
+          <a href={getRelativeLocaleUrl(locale, "/exhibitions")} class={currentPath === getRelativeLocaleUrl(locale, "/exhibitions") ? "text-blu" : "hover:text-blu"}>{locale === "it" ? "Mostre" : "Exhibitions"}</a>
+          <a href={getRelativeLocaleUrl(locale, "/curatorship")} class={currentPath === getRelativeLocaleUrl(locale, "/curatorship") ? "text-blu" : "hover:text-blu"}>{locale === "it" ? "Curatela" : "Curatorship"}</a>
+          <a id="activePrinciples" href="#principles" onclick="scrollToSection('principles')" class="hover:text-blu">{locale === "it" ? "Principi" : "Principles"}</a>
+          <a id="activeChallenges" href="#challenges" onclick="scrollToSection('challenges')" class="hover:text-blu">{locale === "it" ? "Sfide" : "Challenges"}</a>
+          <a id="activeProjects" href="#projects" onclick="scrollToSection('projects')" class="hover:text-blu">{locale === "it" ? "Progetti" : "Projects"}</a>
+          <div>
+            <a href="/" class={locale === "it" ? "opacity-100 text-blu" : "hover:text-blu text-black transition-colors"}>IT</a> / 
+            <a href="/en" class={locale === "en" ? "opacity-100 text-blu" : "hover:text-blu text-black transition-colors"}>EN</a>        
+          </div>
+        </div>
+
+        <!-- Row 2: Logos Horizontal -->
+        <div class="flex justify-evenly py-3 items-center h-18 border-t border-black">
+          <a href="https://www.esteri.it/it/ministero/" target="_blank" class="flex-1 flex justify-center">
+            <img src="/svg/ministero degli affari esteri e della cooperazione internazionale.svg" alt="Ministero Affari Esteri" class="hover:opacity-50 transition-opacity h-16">
+          </a>
+          <a href="https://www.esteri.it/it/diplomazia-culturale-e-diplomazia-scientifica/cooperscientificatecnologica/" target="_blank" class="flex-1 flex justify-center">
+            <img src="/svg/diplomazia scientifica.svg" alt="Diplomazia scientifica" class="hover:opacity-50 transition-opacity h-16">
+          </a>
+          <a href="https://dipartimentodesign.polimi.it/it" target="_blank" class="flex-1 flex justify-center">
+            <img src="/svg/politecnico di milano dipartimento di design.svg" alt="Polimi" class="hover:opacity-50 transition-opacity h-16">
+          </a>
+          <a href="https://www.esa.int/Space_in_Member_States/Italy" target="_blank" class="flex-1 flex justify-center">
+            <img src="/svg/esea.svg" alt="Esa" class="hover:opacity-50 transition-opacity h-16">
+          </a>
+        </div>
+      </div>
+    
+
+    <!-- MENU MOBILE -->
+      <div class="flex sm:hidden fixed top-0 z-50 left-0 text-black h-14 transition-all border-b border-black w-full px-3 justify-between items-center bg-white/90 backdrop-blur-md">
+        <a href={getRelativeLocaleUrl(locale, "/")} class="hover:opacity-50 transition-opacity"><img src="/svg/DSI_Logo_01.svg" alt="logo" class="h-4"/></a>
+        <button @click="open = !open" class="text-xl hover:text-blu focus:outline-none">☰</button>
+      </div>
+
+      <div 
+        x-show="open"
+        @click.away="open = false"
+        :class="open ? 'z-50' : '-z-50'"
+        class="absolute lg:hidden overflow-hidden top-0 left-0 w-screen h-screen bg-black/80 backdrop-blur-2xl flex flex-col items-start gap-4 p-3 text-2xl text-white transition-all"
+        x-transition:enter="transition transform ease-out duration-300"
+        x-transition:enter-start="translate-y-full opacity-0"
+        x-transition:enter-end="translate-y-0 opacity-100"
+        x-transition:leave="transition transform ease-in duration-200"
+        x-transition:leave-start="translate-y-0 opacity-100"
+        x-transition:leave-end="translate-y-full opacity-0"
+      >
+        <button @click="open = false" class="absolute p-3 top-0 right-0 hover:text-blu focus:outline-none">✕</button>
+        <a href={getRelativeLocaleUrl(locale, "/texts")} @click="open = false" class={currentPath === getRelativeLocaleUrl(locale, "/texts") ? "text-blu" : "hover:text-blu"}>{locale === "it" ? "Scritti" : "Texts"}</a>
+        <a href={getRelativeLocaleUrl(locale, "/exhibitions")} @click="open = false" class={currentPath === getRelativeLocaleUrl(locale, "/exhibitions") ? "text-blu" : "hover:text-blu"}>{locale === "it" ? "Mostre" : "Exhibitions"}</a>
+        <a href={getRelativeLocaleUrl(locale, "/curatorship")} @click="open = false" class={currentPath === getRelativeLocaleUrl(locale, "/curatorship") ? "text-blu" : "hover:text-blu"}>{locale === "it" ? "Curatela" : "Curatorship"}</a>
+        <a id="activePrinciples" href="#principles" @click="open = false" onclick="scrollToSection('principles')" class="hover:text-blu">{locale === "it" ? "Principi" : "Principles"}</a>
+        <a id="activeChallenges" href="#challenges" @click="open = false" onclick="scrollToSection('challenges')" class="hover:text-blu">{locale === "it" ? "Sfide" : "Challenges"}</a>
+        <a id="activeProjects" href="#projects" @click="open = false" onclick="scrollToSection('projects')" class="hover:text-blu">{locale === "it" ? "Progetti" : "Projects"}</a>
+
+        <div class="mt-4">
+          <a href="/" class={locale === "it" ? " text-blu" : "hover:text-blu text-white transition-colors"}>IT</a> / 
+          <a href="/en" class={locale === "en" ? " text-blu" : "hover:text-blu text-white transition-colors"}>EN</a>
+        </div>
+      </div>
+      
+      <div class="lg:flex divide-x divide-black max-lg:pt-14" :class="open ? 'overflow-hidden pointer-events-none fixed' : ''">
+        <div class="w-full lg:w-1/2 overflow-auto no-scrollbar lg:mb-14"><slot /></div>
+        <div class="w-full lg:w-1/2 overflow-auto no-scrollbar lg:h-svh sticky top-0" view-transition-name="menu">
+          <Menu locale={locale} />
+        </div>  
+      </div>
+
+      <div class="sm:hidden w-full lg:w-1/2 fixed z-50 bottom-0 left-0 justify-evenly backdrop-blur-md text-black text-lg lg:text-base xl:text-lg bg-white grid grid-cols-4 px-3 items-center h-14 border-t border-black">
+          <a href="https://www.esteri.it/it/ministero/" target="_blank" class="">
+            <img src="/svg/ministero degli affari esteri e della cooperazione internazionale.svg" alt="Ministero Affari Esteri" class="hover:opacity-50 transition-opacity h-12">
+          </a>
+          <a href="https://www.esteri.it/it/diplomazia-culturale-e-diplomazia-scientifica/cooperscientificatecnologica/" target="_blank" class="">
+            <img src="/svg/diplomazia scientifica.svg" alt="Diplomazia scientifica" class="hover:opacity-50 transition-opacity h-12">
+          </a>
+          <a href="https://dipartimentodesign.polimi.it/it" target="_blank" class="">
+            <img src="/svg/politecnico di milano dipartimento di design.svg" alt="Polimi" class="hover:opacity-50 transition-opacity h-12">
+          </a>
+          <a href="https://www.esa.int/Space_in_Member_States/Italy" target="_blank" class="">
+            <img src="/svg/esea.svg" alt="Esa" class="hover:opacity-50 transition-opacity h-12">
+          </a>
+        </div>
+
+  </body>
+</html>
+
+
+<style is:global>
+  @font-face {
+    font-family: "NeueMontreal-Medium";
+    src: url(../assets/font/PPNeueMontreal-Medium.woff2);
+  }
+
+  @font-face {
+    font-family: "NeueMontreal-Book";
+    src: url(../assets/font/PPNeueMontreal-Book.woff2);
+  }
+
+  html{
+    @apply font-NM-Medium;
+  }
+</style>
+
+<script>
+  document.addEventListener("astro:before-swap", () => {
+    const menu = document.querySelector("#menu");
+    if (menu) {
+      sessionStorage.setItem("menuScrollPosition", menu.scrollTop.toString());
+    }
+  });
+
+  document.addEventListener("astro:after-swap", () => {
+    const menu = document.querySelector("#menu");
+    const menuScrollPosition = sessionStorage.getItem("menuScrollPosition");
+    if (menu && menuScrollPosition) {
+      menu.scrollTo({
+        top: parseInt(menuScrollPosition, 10),
+        behavior: "instant",
+      });
+      sessionStorage.removeItem("menuScrollPosition");
+    }
+  });
+
+  function scrollToSection(sectionId) {
+    const section = document.getElementById(sectionId);
+    if (section) {
+      section.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+  };
+
+  if ("getBattery" in navigator) {
+    (navigator as any).getBattery().then(function(battery) {
+      if (battery.level <= 0.2) { 
+        console.log("Battery is low, autoplay is disabled");
+      } else {
+        const video = document.querySelector('video');
+        video?.play();
+      }
+    });
+  } else {
+    console.log("Battery API is not supported on this device.");
+  }
+
+</script>

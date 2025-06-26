@@ -1,0 +1,115 @@
+---
+import { Image, getImage } from "astro:assets";
+import { getCollection } from "astro:content";
+interface Props {
+  locale: string;
+}
+
+const { locale } = Astro.props;
+
+const allPrinciples = (await getCollection("principles", ({ data }) => data.lang === locale)).sort((a, b) => a.data.number - b.data.number);
+// const allPrinciples = await getCollection("principles", ({ data }) => data.lang === locale);
+const currentPath = Astro.url.pathname;
+
+// const allChallenges = await getCollection("challenges", ({ data }) => data.lang === locale);
+const allChallenges = (await getCollection("challenges", ({ data }) => data.lang === locale)).sort((a, b) => a.data.challengesNumber - b.data.challengesNumber);
+
+
+// const allProjects = await getCollection("projects", ({ data }) => data.lang === locale);
+const allProjects = (await getCollection("projects", ({ data }) => data.lang === locale)).sort((a, b) => a.data.projectNumber - b.data.projectNumber);
+
+
+---
+
+<div class="text-3xl lg:h-svh overflow-y-auto overflow-x-hidden no-scrollbar w-full" id="menu">
+  <section id="principles">
+    <div class="sticky top-0 z-20">
+      <h2 class="bg-blu text-white p-2 text-3xl lg:text-4xl">{locale === "it" ? "Principi" : "Principles"}</h2>
+    </div>
+    <div class="grid grid-cols-2">
+      {allPrinciples.map((p) => {
+        const isActive = currentPath === `/principles/${p.slug}`;
+        return (
+          <a
+            href={`/principles/${p.slug}`}
+            class={`group block aspect-video border-t border-black odd:border-r text-xl sm:text-2xl md:text-3xl xl:text-4xl transition-all duration-300 ease-in-out ${isActive ? "bg-blu text-white" : "bg-zinc-100 text-white"}`}
+          >
+            <div class="relative h-full w-full">
+
+              <div class="p-2 text-white w-full absolute top-0 z-10 flex justify-between">
+                <div class="">{p.data.title}</div>
+                <img src={p.data.icon} alt={p.data.icon} class="h-8 md:h-12 lg:h-10 xl:h-12 p-1">
+              </div>
+
+              <div class={`absolute inset-[-1px] transition-all duration-300 ease-in-out ${isActive ? "bg-blu opacity-40" : "group-hover:bg-blu group-hover:opacity-40"}`}></div>
+
+              <video 
+                class="-z-10 object-cover h-[101%] w-[101%] pointer-events-none " 
+                poster={p.data.img}
+                transition:persist
+                autoplay="true" 
+                autoplay
+                autoplay
+                muted 
+                loop
+                playsinline
+                webkit-playsinline
+              >
+                <source src={p.data.videoThumbnail} type="video/mp4" class="pointer-events-none"/>
+              </video>
+
+            </div>
+          </a>
+        );
+      })}
+    </div>
+  </section>
+
+  
+  <section id="challenges" class="mt-[-1px]">
+    <div class="sticky top-0 z-20">
+      <h2 class="bg-blu text-white p-2 text-3xl lg:text-4xl">{locale === "it" ? "Sfide" : "Challenges"}</h2>
+    </div>
+    <div>
+      {allChallenges.map((p) => {
+        const isActive = currentPath === `/challenges/${p.slug}`;
+        return (
+          <a
+            href={`/challenges/${p.slug}`}
+            class={`h-32 lg:h-36 block border-t border-black text-4xl transition-all duration-300 ease-in-out ${isActive ? " text-white" : " text-white"}`}
+          >
+            <div class="relative h-full w-full">
+              <h1 class="absolute top-0 p-2 text-2xl sm:text-2xl md:text-3xl xl:text-4xl z-10 pointer-events-none">{p.data.subtitle}</h1>
+              <div class={`absolute inset-[-1px] bg-blu transition-all duration-300 ease-in-out ${isActive ? "opacity-0" : "opacity-40 hover:opacity-0"}`}></div>
+              <Image src={p.data.thumbnail} alt={p.data.coverAlt} width="1080" height="1080" class="-z-10 object-cover h-full w-full" format="webp" loading="lazy"/>
+            </div>
+          </a>
+        );
+      })}
+    </div>
+  </section>
+  
+
+  <section id="projects" class="mt-[-1px]">
+    <div class="sticky top-0 z-30">
+      <h2 class="bg-blu text-white p-2 text-3xl lg:text-4xl">{locale === "it" ? "Progetti" : "Projects"}</h2>
+    </div>
+    <div>
+      {allProjects.map((p) => {
+        const isActive = currentPath === `/projects/${p.slug}`;
+        return (
+          <a
+            href={`/projects/${p.slug}`}
+            class={`h-64 lg:h-72 block border-t border-black text-4xl transition-all duration-300 ease-in-out ${isActive ? " text-white" : " text-white"}`}
+          >
+            <div class="relative h-full w-full">
+              <h1 class="absolute top-0 p-2 text-2xl sm:text-2xl md:text-3xl xl:text-4xl z-10 pointer-events-none">{p.data.title}</h1>
+              <div class={`absolute inset-[-1px] bg-black transition-all duration-300 ease-in-out ${isActive ? "opacity-0" : "opacity-35 hover:opacity-0"}`}></div>
+              <Image src={p.data.thumbnail} alt={p.data.coverAlt} width="1080" height="1080" class="-z-10 object-cover h-full w-full" format="webp" loading="lazy"/>
+            </div>
+          </a>
+        );
+      })}
+    </div>
+  </section>
+</div>

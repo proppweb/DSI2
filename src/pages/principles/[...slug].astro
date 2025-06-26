@@ -1,0 +1,141 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { getCollection } from "astro:content";
+
+
+export async function getStaticPaths() {
+  const principlesEntries = await getCollection("principles");
+  return principlesEntries.map((entry) => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+
+const allPrinciples = await getCollection("principles");
+
+allPrinciples.sort((a, b) => {
+  const numberA =
+    typeof a.data.number === "number"
+      ? a.data.number
+      : parseInt(a.data.number, 10);
+  const numberB =
+    typeof b.data.number === "number"
+      ? b.data.number
+      : parseInt(b.data.number, 10);
+  return numberA - numberB;
+});
+
+
+const currentPostIndex = allPrinciples.findIndex((p) => p.slug === entry.slug);
+
+
+const previousPost =
+  currentPostIndex > 0 ? allPrinciples[currentPostIndex - 1] : null;
+const nextPost =
+  currentPostIndex < allPrinciples.length - 1
+    ? allPrinciples[currentPostIndex + 1]
+    : null;
+---
+
+<Layout title={`DSI - ${entry.data.title}`} locale={entry.data.lang} img={entry.data.img}>
+  <div class="bg-blu py-2 px-3 text-4xl text-white">{entry.data.lang === "it" ? "Principio" : "Principles"} </div>
+  <div>
+    <h1 class="p-3 my-4 text-5xl sm:text-6xl md:text-7xl lg:text-6xl xl:text-5xl text-blu font-light ">{entry.data.title}</h1>
+    <div class="relative w-full group">
+      <!-- <video 
+        id="video" 
+        class="w-full" 
+        autoplay 
+        muted 
+        loop
+      >
+        <source src={entry.data.video} type="video/mp4" />
+        <img src={entry.data.img} alt={entry.data.img} class="w-full" />
+      </video> -->
+
+      <!-- <div class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+        <button
+          onclick="toggleMute()"
+          class=" bg-gray-900 bg-opacity-50 text-white rounded-full py-2 px-4 opacity-60 hover:opacity-100 transition-opacity"
+          aria-label="Toggle audio"
+          id="muteButton"
+        >
+        Audio
+        </button>
+      </div> -->
+
+      <div style="padding:56.25% 0 0 0;position:relative;">
+        <iframe 
+        src={`${entry.data.video}&autoplay=1&loop=1`} 
+          frameborder="0" 
+          allow="autoplay; clipboard-write" 
+          style="position:absolute;top:0;left:0;width:100%;height:100%;"
+          title="DSI video">
+        </iframe>
+      </div>
+      <script src="https://player.vimeo.com/api/player.js"></script>
+
+    </div>
+    <h2 class="text-2xl sm:text-3xl md:text-4xl lg:text-3xl xl:text-4xl text-blu p-3">{entry.data.subtitle}</h2>
+    <div class="mb:6 lg:mb-24 p-3 text-base sm:text-base md:text-lg lg:text-base xl:text-xl font-NM-Book">
+      <Content />
+    </div>
+  </div>
+
+</Layout>
+
+<style is:global>
+  p {
+    @apply py-1 sm:py-2 md:py-3 lg:py-2 xl:py-4;
+  }
+
+  p span {
+    @apply py-1 sm:py-2 md:py-3 lg:py-2 xl:py-4 font-NM-Medium;
+  }
+
+  #activePrinciples{
+    @apply text-blu;
+  }
+</style>
+
+<!-- volume video con transizione -->
+<!-- <script is:inline>
+  function toggleMute() {
+    const video = document.getElementById("video");
+    const muteButton = document.getElementById("muteButton");
+    const targetVolume = video.muted ? 1 : 0; 
+    const step = 0.05; 
+    const intervalTime = 20; 
+
+    video.muted = false; 
+
+    const fadeAudio = setInterval(() => {
+      if (Math.abs(video.volume - targetVolume) < step) {
+        video.volume = targetVolume; 
+        clearInterval(fadeAudio); 
+        video.muted = targetVolume === 0; 
+        muteButton.innerText = targetVolume === 0 ? "Audio" : "Mute";
+      } else {
+        video.volume += targetVolume > video.volume ? step : -step; 
+      }
+    }, intervalTime);
+  }
+</script> -->
+
+<script is:inline>
+  function toggleMute() {
+    const video = document.getElementById("video");
+    const muteButton = document.getElementById("muteButton");
+    
+    if (video.muted) {
+      video.muted = false;
+      muteButton.innerText = "Mute";
+    } else {
+      video.muted = true;
+      muteButton.innerText = "Audio";
+    }
+  }
+</script>
