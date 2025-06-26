@@ -16,15 +16,17 @@ export default defineConfig({
   }), alpinejs()],
 
   i18n: {
+    locales: ["it", "en"],
     defaultLocale: "it",
-    locales: ["en", "it"],
     routing: {
-      prefixDefaultLocale: false
+      prefixDefaultLocale: false,
     },
     fallback: {
       en: "it"
     },
   },
+
+  
 
   vite: {
     server: {
