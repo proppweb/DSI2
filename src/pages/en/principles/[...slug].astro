@@ -1,11 +1,11 @@
 ---
-import Layout from "../../layouts/Layout.astro";
+import Layout from "../../../layouts/Layout.astro";
 import { getCollection } from 'astro:content';
 
 export async function getStaticPaths() {
   const principlesEntries = await getCollection('principles');
   return principlesEntries
-    .filter((entry) => entry.data.lang === 'it')
+    .filter((entry) => entry.data.lang === 'en')
     .map((entry) => ({
       params: { slug: entry.slug },
       props: { entry }
@@ -15,8 +15,8 @@ export async function getStaticPaths() {
 const { entry } = Astro.props;
 const { Content } = await entry.render();
 
-
 ---
+
 
 <Layout title={`DSI - ${entry.data.title}`} locale={entry.data.lang} img={entry.data.img}>
   <div class="bg-blu py-2 px-3 text-4xl text-white">{entry.data.lang === "it" ? "Principio" : "Principles"} </div>
@@ -57,7 +57,6 @@ const { Content } = await entry.render();
     @apply text-blu;
   }
 </style>
-
 
 <script is:inline>
   function toggleMute() {

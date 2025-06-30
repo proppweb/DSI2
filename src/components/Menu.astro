@@ -7,13 +7,12 @@ interface Props {
 
 const { locale } = Astro.props;
 
-const allPrinciples = (await getCollection("principles", ({ data }) => data.lang === locale)).sort((a, b) => a.data.number - b.data.number);
-// const allPrinciples = await getCollection("principles", ({ data }) => data.lang === locale);
+// const allPrinciples = (await getCollection("principles", ({ data }) => data.lang === locale)).sort((a, b) => a.data.number - b.data.number);
+const allPrinciples = await getCollection("principles", ({ data }) => data.lang === locale);
 const currentPath = Astro.url.pathname;
 
 // const allChallenges = await getCollection("challenges", ({ data }) => data.lang === locale);
 const allChallenges = (await getCollection("challenges", ({ data }) => data.lang === locale)).sort((a, b) => a.data.challengesNumber - b.data.challengesNumber);
-
 
 // const allProjects = await getCollection("projects", ({ data }) => data.lang === locale);
 const allProjects = (await getCollection("projects", ({ data }) => data.lang === locale)).sort((a, b) => a.data.projectNumber - b.data.projectNumber);

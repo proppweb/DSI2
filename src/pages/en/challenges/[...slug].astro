@@ -1,11 +1,11 @@
 ---
-import Layout from "../../layouts/Layout.astro";
+import Layout from "../../../layouts/Layout.astro";
 import { getCollection } from 'astro:content';
 
 export async function getStaticPaths() {
   const challengesEntries = await getCollection('challenges');
   return challengesEntries
-    .filter((entry) => entry.data.lang === 'it')
+    .filter((entry) => entry.data.lang === 'en')
     .map((entry) => ({
       params: { slug: entry.slug },
       props: { entry }
@@ -16,6 +16,8 @@ const { entry } = Astro.props;
 const { Content } = await entry.render();
 
 ---
+
+
 
 <Layout title={`DSI - ${entry.data.title}`} locale={entry.data.lang} description={entry.data.subtitle}>
   <div class="bg-blu px-3 py-2 text-4xl text-white">{entry.data.lang === "it" ? "Sfide" : "Challenges"}</div>
