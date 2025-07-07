@@ -16,14 +16,12 @@ export default defineConfig({
   }), alpinejs()],
 
   i18n: {
-    locales: ['it' , 'en'],
+    locales: ['it'],
     defaultLocale: 'it',
     routing: {
       prefixDefaultLocale: false,
     },
-    fallback: {
-      'en' : 'it'
-    },
+    // No fallback needed with only one locale
   },  
 
   
