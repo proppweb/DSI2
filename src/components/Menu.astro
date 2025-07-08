@@ -9,6 +9,8 @@ const { locale } = Astro.props;
 
 // const allPrinciples = (await getCollection("principles", ({ data }) => data.lang === locale)).sort((a, b) => a.data.number - b.data.number);
 const allPrinciples = await getCollection("principles", ({ data }) => data.lang === locale);
+allPrinciples.sort((a, b) => a.data.number - b.data.number);
+
 const currentPath = Astro.url.pathname;
 
 // const allChallenges = await getCollection("challenges", ({ data }) => data.lang === locale);
