@@ -21,7 +21,7 @@ const { Content } = await entry.render();
 <Layout title={`DSI - ${entry.data.title}`} locale={entry.data.lang} img={entry.data.img}>
   <div class="bg-blu py-2 px-3 text-4xl text-white">{entry.data.lang === "it" ? "Principio" : "Principles"} </div>
   <div>
-    <h1 class="p-3 my-4 text-5xl sm:text-6xl md:text-7xl lg:text-6xl xl:text-5xl text-blu font-light ">{entry.data.title}</h1>
+    <h1 class="p-3 my-4 uppercase text-5xl sm:text-6xl md:text-7xl lg:text-6xl xl:text-5xl text-blu font-light ">{entry.data.title}</h1>
     <div class="relative w-full group">
 
       <div style="padding:56.25% 0 0 0;position:relative;">
