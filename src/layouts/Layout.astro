@@ -59,10 +59,13 @@ const currentPath = Astro.url.pathname;
           <a id="activePrinciples" href="#principles" onclick="scrollToSection('principles')" class="hover:text-blu">{locale === "it" ? "Principi" : "Principles"}</a>
           <a id="activeChallenges" href="#challenges" onclick="scrollToSection('challenges')" class="hover:text-blu">{locale === "it" ? "Sfide" : "Challenges"}</a>
           <a id="activeProjects" href="#projects" onclick="scrollToSection('projects')" class="hover:text-blu">{locale === "it" ? "Progetti" : "Projects"}</a>
-          <!--<div>
+          
+          <!-- LINGUA -->
+          <div>
             <a href="/" class={locale === "it" ? "opacity-100 text-blu" : "hover:text-blu text-black transition-colors"}>IT</a> / 
-            <a href="/en" class={locale === "en" ? "opacity-100 text-blu" : "hover:text-blu text-black transition-colors"}>EN</a>
-          </div>-->
+            <a href="https://dsi-v2-english.netlify.app/" class={locale === "en" ? "opacity-100 text-blu" : "hover:text-blu text-black transition-colors"}>EN</a>
+          </div>
+
         </div>
 
         <!-- Row 2: Logos Horizontal -->
@@ -109,12 +112,12 @@ const currentPath = Astro.url.pathname;
         <a id="activeChallenges" href="#challenges" @click="open = false" onclick="scrollToSection('challenges')" class="hover:text-blu">{locale === "it" ? "Sfide" : "Challenges"}</a>
         <a id="activeProjects" href="#projects" @click="open = false" onclick="scrollToSection('projects')" class="hover:text-blu">{locale === "it" ? "Progetti" : "Projects"}</a>
 
-        <!--
+        <!-- LINGUA -->
         <div class="mt-4">
           <a href="/" class={locale === "it" ? " text-blu" : "hover:text-blu text-white transition-colors"}>IT</a> / 
-          <a href="/en" class={locale === "en" ? " text-blu" : "hover:text-blu text-white transition-colors"}>EN</a>
+          <a href="https://dsi-v2-english.netlify.app/" class={locale === "en" ? " text-blu" : "hover:text-blu text-white transition-colors"}>EN</a>
         </div>
-        -->
+        
       </div>
       
       <div class="lg:flex divide-x divide-black max-lg:pt-14" :class="open ? 'overflow-hidden pointer-events-none fixed' : ''">
